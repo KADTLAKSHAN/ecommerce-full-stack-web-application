@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FaShoppingCart } from "react-icons/fa";
 import ProductViewModel from "./ProductViewModel";
-import truncateText from "./truncateText";
+import truncateText from "../../utils/truncateText";
 
 const ProductCard = ({
   productId,

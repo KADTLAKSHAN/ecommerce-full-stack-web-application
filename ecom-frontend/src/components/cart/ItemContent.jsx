@@ -9,7 +9,7 @@ import {
 } from "../../store/actions";
 import toast from "react-hot-toast";
 import { formatPrice } from "../../utils/formatPrice";
-import { truncateText } from "../../utils/truncateText";
+import truncateText from "../../utils/truncateText";
 
 const ItemContent = ({
   productId,

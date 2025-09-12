@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import {
   decreaseCartQuantity,
   increaseCartQuantity,
+  removeFromCart,
 } from "../../store/actions";
 import toast from "react-hot-toast";
 
@@ -42,7 +43,9 @@ const ItemContent = ({
     }
   };
 
-  const removeItemFromCart = (cartItems) => {};
+  const removeItemFromCart = (cartItems) => {
+    dispatch(removeFromCart(cartItems, toast));
+  };
 
   return (
     <div className="grid md:grid-cols-5 grid-cols-4 md:text-md text-sm gap-4   items-center  border border-slate-200  rounded-md  lg:px-4  py-4 p-2">

@@ -4,7 +4,7 @@ const initialState = {
 };
 
 export const authReducer = (state = initialState, action) => {
-  switch (action) {
+  switch (action.type) {
     case "LOGIN_USER":
       return {
         ...state,

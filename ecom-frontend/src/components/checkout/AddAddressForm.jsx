@@ -2,9 +2,12 @@ import { useForm } from "react-hook-form";
 import InputField from "../shared/InputField";
 import { FaAddressCard } from "react-icons/fa";
 import Spinners from "../shared/Spinners";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import toast from "react-hot-toast";
+import { addUpdateUserAddress } from "../../store/actions";
 
-const AddAddressForm = () => {
+const AddAddressForm = ({ address, setOpenAddressModal }) => {
+  const dispatch = useDispatch();
   const { btnLoader } = useSelector((state) => state.errors);
 
   const {
@@ -14,7 +17,11 @@ const AddAddressForm = () => {
     formState: { errors },
   } = useForm({ mode: "onTouched" });
 
-  const onSaveAddressHandler = (data) => {};
+  const onSaveAddressHandler = async (data) => {
+    dispatch(
+      addUpdateUserAddress(data, toast, address?.addressId, setOpenAddressModal)
+    );
+  };
 
   return (
     <div className="">

@@ -182,3 +182,7 @@ export const getUserAddresses = () => async (dispatch) => {
     });
   }
 };
+
+export const selectUserCheckoutAddress = (address) => (dispatch) => {
+  dispatch({ type: "SELECT_CHECKOUT_ADDRESS", payload: address });
+};

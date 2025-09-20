@@ -1,13 +1,14 @@
 import { Step, StepLabel, Stepper } from "@mui/material";
 import { useEffect, useState } from "react";
 import AddressInfo from "./AddressInfo";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getUserAddresses } from "../../store/actions";
 
 const Checkout = () => {
   const [activeStep, setActiveStep] = useState(0);
   const steps = ["Address", "Payment Method", "Order Summary", "Payment"];
   const dispatch = useDispatch();
+  const { address } = useSelector((state) => state.auth);
 
   useEffect(() => {
     dispatch(getUserAddresses());
@@ -23,7 +24,9 @@ const Checkout = () => {
         ))}
       </Stepper>
 
-      <div className="mt-5">{activeStep === 0 && <AddressInfo />}</div>
+      <div className="mt-5">
+        {activeStep === 0 && <AddressInfo address={address} />}
+      </div>
     </div>
   );
 };

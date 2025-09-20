@@ -51,7 +51,6 @@ export const addToCart =
   (dispatch, getState) => {
     //Find the Product
     const { products } = getState().products;
-    console.log(products);
 
     const getProduct = products.find(
       (item) => item.productId === data.productId
@@ -160,6 +159,7 @@ export const addUpdateUserAddress =
     try {
       const { data } = await api.post("/addresses", sendData);
       toast.success("Address saved successfully");
+      dispatch({ type: "IS_SUCCESS" });
     } catch (error) {
       console.log(error);
       toast.error(error?.response?.data?.message || "Internal Server Error");

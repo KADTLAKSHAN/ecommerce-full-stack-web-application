@@ -5,6 +5,7 @@ import Spinners from "../shared/Spinners";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { addUpdateUserAddress } from "../../store/actions";
+import { useEffect } from "react";
 
 const AddAddressForm = ({ address, setOpenAddressModal }) => {
   const dispatch = useDispatch();
@@ -14,6 +15,7 @@ const AddAddressForm = ({ address, setOpenAddressModal }) => {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm({ mode: "onTouched" });
 
@@ -23,12 +25,23 @@ const AddAddressForm = ({ address, setOpenAddressModal }) => {
     );
   };
 
+  useEffect(() => {
+    if (address.addressId) {
+      setValue("buildingName", address?.buildingName);
+      setValue("city", address?.city);
+      setValue("street", address?.street);
+      setValue("state", address?.state);
+      setValue("pincode", address?.buildingName);
+      setValue("country", address?.country);
+    }
+  }, [address]);
+
   return (
     <div className="">
       <form onSubmit={handleSubmit(onSaveAddressHandler)} className="">
         <div className="flex justify-center items-center mb-4 font-semibold text-2xl text-slate-800 py-2 px-4">
           <FaAddressCard className="mr-2 text-2xl" />
-          Add Address
+          {!address.addressId ? "Add Address" : "Update Address"}
         </div>
 
         <div className="flex flex-col gap-4">

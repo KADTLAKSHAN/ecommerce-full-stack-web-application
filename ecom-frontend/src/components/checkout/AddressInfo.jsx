@@ -53,7 +53,7 @@ const AddressInfo = ({ address }) => {
                 <AddressList
                   addresses={address}
                   setSelectedAddress={setSelectedAddress}
-                  openAddressModal={openAddressModal}
+                  setOpenAddressModal={setOpenAddressModal}
                 />
               </div>
 

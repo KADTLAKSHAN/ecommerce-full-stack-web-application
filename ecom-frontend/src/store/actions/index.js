@@ -188,10 +188,6 @@ export const getUserAddresses = () => async (dispatch) => {
   }
 };
 
-export const selectUserCheckoutAddress = (address) => (dispatch) => {
-  dispatch({ type: "SELECT_CHECKOUT_ADDRESS", payload: address });
-};
-
 export const clearCheckoutAddress = () => {
   return { type: "REMOVE_CHECKOUT_ADDRESS" };
 };
@@ -214,3 +210,14 @@ export const deleteUserAddress =
       setOpenDeleteModal(false);
     }
   };
+
+export const selectUserCheckoutAddress = (address) => (dispatch) => {
+  dispatch({ type: "SELECT_CHECKOUT_ADDRESS", payload: address });
+};
+
+export const addPaymentMethod = (method) => {
+  return {
+    type: "ADD_PAYMENT_METHOD",
+    payload: method,
+  };
+};

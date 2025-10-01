@@ -3,6 +3,7 @@ import { selectUserCheckoutAddress } from "../actions";
 const initialState = {
   user: null,
   address: [],
+  clientSecret: null,
   selectedUserCheckoutAddress: null,
 };
 

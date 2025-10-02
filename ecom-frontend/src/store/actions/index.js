@@ -258,13 +258,10 @@ export const getUserCart = () => async (dispatch, getState) => {
 };
 
 export const createStripePaymentSecret =
-  (totalPrice) => async (dispatch, getState) => {
+  (sendData) => async (dispatch, getState) => {
     try {
       dispatch({ type: "IS_FETCHING" });
-      const { data } = await api.post("/order/stripe-client-secret", {
-        amount: Number(totalPrice) * 100,
-        currency: "usd",
-      });
+      const { data } = await api.post("/order/stripe-client-secret", sendData);
       dispatch({ type: "CLIENT_SECRET", payload: data });
       localStorage.setItem("client_secret", JSON.stringify(data));
       dispatch({ type: "IS_SUCCESS" });
@@ -280,10 +277,7 @@ export const stripePaymentConfirmation =
   (sendData, setErrorMessage, setLoading, toast) =>
   async (dispatch, getState) => {
     try {
-      const { response } = await api.post(
-        "/order/users/payments/online",
-        sendData
-      );
+      const response = await api.post("/order/users/payments/online", sendData);
       if (response.data) {
         localStorage.removeItem("cartItems");
         localStorage.removeItem("client-secret");

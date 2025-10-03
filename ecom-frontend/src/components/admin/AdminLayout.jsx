@@ -49,7 +49,7 @@ const AdminLayout = () => {
         </div>
       </Dialog>
 
-      <div className="hidden xl:fixed xl:inset-y-0 z-50 xl:flex xl:w-72 xl:flex-col">
+      <div className="hidden xl:fixed xl:inset-y-0 xl:z-50 xl:flex xl:w-72 xl:flex-col">
         <Sidebar />
       </div>
 

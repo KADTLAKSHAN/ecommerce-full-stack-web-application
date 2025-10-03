@@ -19,6 +19,7 @@
     "@stripe/stripe-js": "^8.0.0",
     "@tailwindcss/vite": "^4.1.12",
     "axios": "^1.11.0",
+    "classnames": "^2.5.1",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-hook-form": "^7.62.0",

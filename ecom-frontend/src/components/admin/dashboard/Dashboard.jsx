@@ -1,12 +1,31 @@
+import { useDispatch, useSelector } from "react-redux";
 import DashboardOverview from "./DashboardOverview";
 import { FaBoxOpen, FaDollarSign, FaShoppingCart } from "react-icons/fa";
+import { useEffect } from "react";
+import Loader from "../../shared/Loader";
+import ErrorPage from "../../shared/ErrorPage";
+import { analyticsAction } from "../../../store/actions";
 
 const Dashboard = () => {
-  const { productCount, totalRevenue, totalOrders } = {
-    productCount: "8",
-    totalRevenue: "8712.85",
-    totalOrders: "7",
-  };
+  const dispatch = useDispatch();
+
+  const { isLoading, errorMessage } = useSelector((state) => state.errors);
+
+  const {
+    analytics: { productCount, totalRevenue, totalOrders },
+  } = useSelector((state) => state.admin);
+
+  useEffect(() => {
+    dispatch(analyticsAction());
+  }, [dispatch]);
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  if (errorMessage) {
+    return <ErrorPage message={errorMessage} />;
+  }
 
   return (
     <div>

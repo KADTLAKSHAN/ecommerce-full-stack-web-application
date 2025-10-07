@@ -1,9 +1,11 @@
 import { DataGrid } from "@mui/x-data-grid";
 import { adminOrderTableColumn } from "../../helper/tableColumn";
 import { useState } from "react";
-import { useLocation, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
-const OrderTable = ({ adminOrders, pagination }) => {
+const OrderTable = ({ adminOrder, pagination }) => {
+  const navigate = useNavigate();
+
   const [currentPage, setCurrentPage] = useState(
     pagination?.pageNumber + 1 || 1
   );
@@ -12,7 +14,7 @@ const OrderTable = ({ adminOrders, pagination }) => {
   const params = new URLSearchParams(searchParams);
   const pathname = useLocation().pathname;
 
-  const tableRecords = adminOrders?.map((item) => {
+  const tableRecords = adminOrder?.map((item) => {
     return {
       id: item.orderId,
       email: item.email,
@@ -26,7 +28,7 @@ const OrderTable = ({ adminOrders, pagination }) => {
     const page = paginationModel.page + 1;
     setCurrentPage(page);
     params.set("page", page.toString());
-    Naviagte(`${pathname}?${params}`);
+    navigate(`${pathname}?${params}`);
   };
 
   return (
@@ -41,7 +43,7 @@ const OrderTable = ({ adminOrders, pagination }) => {
           rows={tableRecords}
           columns={adminOrderTableColumn}
           paginationMode="server"
-          rowCount={pagination?.totalElements || 0}
+          rowCount={pagination?.totalElement || 0}
           initialState={{
             pagination: {
               paginationModel: {
@@ -51,6 +53,7 @@ const OrderTable = ({ adminOrders, pagination }) => {
             },
           }}
           onPaginationModelChange={handlePaginationChange}
+          disableRowSelectionOnClick
           disableColumnResize
           pageSizeOptions={[pagination?.pageSize || 10]}
           pagination

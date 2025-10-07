@@ -39,8 +39,8 @@ const Modal = ({ open, setOpen, children, title = "" }) => {
                       <button onClick={() => setOpen(false)}>
                         <RxCross1 className="text-slate-800 text-2xl" />
                       </button>
-                      {children}
                     </div>
+                    {children}
                   </div>
                 </div>
               </DialogPanel>

@@ -6,6 +6,9 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import { useState } from "react";
 import Spinners from "../../shared/Spinners";
+import { useDispatch } from "react-redux";
+import { updateOrderStatusFromDashboard } from "../../../store/actions";
+import toast from "react-hot-toast";
 
 const ORDER_STATUSES = [
   "Pending",
@@ -28,9 +31,22 @@ const UpdateOrderForm = ({
   );
   const [error, setError] = useState("");
 
+  const dispatch = useDispatch();
+
+  const updateOrderStatus = (e) => {
+    e.preventDefault();
+    if (!orderStatus) {
+      setError("Order status is required");
+      return;
+    }
+    dispatch(
+      updateOrderStatusFromDashboard(selectedId, orderStatus, toast, setLoader)
+    );
+  };
+
   return (
     <div className="py-5 relative h-full">
-      <form className="space-y-4" onSubmit={""}>
+      <form className="space-y-4" onSubmit={updateOrderStatus}>
         <FormControl fullWidth variant="outlined" error={!!error}>
           <InputLabel id="order-status-label">Order Status</InputLabel>
           <Select

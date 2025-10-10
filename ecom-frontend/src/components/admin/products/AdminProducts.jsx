@@ -1,7 +1,138 @@
-import React from "react";
+import { MdAddShoppingCart } from "react-icons/md";
+import { FaBoxOpen } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import Loader from "../../shared/Loader";
+import { DataGrid } from "@mui/x-data-grid";
+import { adminProductTableColumn } from "../../helper/tableColumn";
+import { useState } from "react";
 
 const AdminProducts = () => {
-  return <div>AdminProducts</div>;
+  const products = [
+    {
+      productId: 2,
+      productName: "Wireless Earbuds Pro",
+      image:
+        "http://localhost:8080/images/970634c6-7b10-447f-a0f4-c3e7be529517.jpg",
+      description:
+        "Noise-cancelling wireless earbuds with superior sound quality",
+      quantity: 199,
+      price: 80.0,
+      discount: 15.0,
+      specialPrice: 68.0,
+    },
+    {
+      productId: 102,
+      productName: "Gaming Laptop GX",
+      image:
+        "http://localhost:8080/images/e4e4dcf1-b468-471f-86c1-f57fb2e9ad25.webp",
+      description:
+        "High-performance gaming laptop with a 4K display and powerful GPU",
+      quantity: 29,
+      price: 1200.0,
+      discount: 20.0,
+      specialPrice: 960.0,
+    },
+  ];
+
+  const pagination = {
+    pageNumber: 0,
+    pageSize: 50,
+    totalElements: 11,
+    totalPages: 1,
+    lastPage: true,
+  };
+
+  const emptyProducts = !products || products?.length === 0;
+  const { isLoading, errorMessage } = useSelector((state) => state.errors);
+
+  const [currentPage, setCurrentPage] = useState(
+    pagination?.pageNumber + 1 || 1
+  );
+
+  const tableRecords = products?.map((item) => {
+    return {
+      id: item.productId,
+      productName: item.productName,
+      description: item.description,
+      discount: item.discount,
+      image: item.image,
+      price: item.price,
+      quantity: item.quantity,
+      specialPrice: item.specialPrice,
+    };
+  });
+
+  const handleEdit = (product) => {};
+
+  const handelDelete = (product) => {};
+
+  const handleImageUpload = (product) => {};
+
+  const handleProductView = (product) => {};
+
+  const handlePaginationChange = (paginationMode) => {};
+
+  return (
+    <div>
+      <div className="pt-6 pb-10 flex justify-end">
+        <button className="bg-custom-blue hover:bg-blue-600 text-white font-semibold py-2 px-4 flex items-center gap-2 rounded-md shadow-md transition-colors hover:text-slate-300 duration-300">
+          <MdAddShoppingCart className="text-xl" /> Add Product
+        </button>
+      </div>
+
+      {!emptyProducts && (
+        <h1 className="text-slate-800 text-3xl text-center font-bold pd-6 uppercase">
+          All Products
+        </h1>
+      )}
+
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <>
+          {emptyProducts ? (
+            <div className="flex flex-col items-center justify-center text-gray-600 py-10">
+              <FaBoxOpen size={50} className="mb-3" />
+              <h2 className="text-2xl font-semibold">No product created yet</h2>
+            </div>
+          ) : (
+            <div className="max-w-full">
+              <DataGrid
+                className="w-full"
+                rows={tableRecords}
+                columns={adminProductTableColumn(
+                  handleEdit,
+                  handelDelete,
+                  handleImageUpload,
+                  handleProductView
+                )}
+                paginationMode="server"
+                rowCount={pagination?.totalElements || 0}
+                initialState={{
+                  pagination: {
+                    paginationModel: {
+                      pageSize: pagination?.pageSize || 10,
+                      page: currentPage - 1,
+                    },
+                  },
+                }}
+                onPaginationModelChange={handlePaginationChange}
+                disableRowSelectionOnClick
+                disableColumnResize
+                pageSizeOptions={[pagination?.pageSize || 10]}
+                pagination
+                paginationOptions={{
+                  showFirstButton: true,
+                  showLastButton: true,
+                  hideNextButton: currentPage === pagination?.totalPages,
+                }}
+              />
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  );
 };
 
 export default AdminProducts;

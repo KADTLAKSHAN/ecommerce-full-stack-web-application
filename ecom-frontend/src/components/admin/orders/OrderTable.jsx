@@ -55,7 +55,7 @@ const OrderTable = ({ adminOrder, pagination }) => {
           rows={tableRecords}
           columns={adminOrderTableColumn(handleEdit)}
           paginationMode="server"
-          rowCount={pagination?.totalElement || 0}
+          rowCount={pagination?.totalElements || 0}
           initialState={{
             pagination: {
               paginationModel: {

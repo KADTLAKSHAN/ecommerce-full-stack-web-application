@@ -13,7 +13,7 @@ export const orderReducer = (state = initialState, action) => {
           ...state.pagination,
           pageNumber: action.pageNumber,
           pageSize: action.pageSize,
-          totalElement: action.totalElements,
+          totalElements: action.totalElements,
           totalPages: action.totalPages,
         },
       };

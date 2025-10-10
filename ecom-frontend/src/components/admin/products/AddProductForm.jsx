@@ -3,6 +3,9 @@ import InputField from "../../shared/InputField";
 import { useEffect, useState } from "react";
 import Spinners from "../../shared/Spinners";
 import Button from "@mui/material/Button";
+import { useDispatch } from "react-redux";
+import { updateProductFromDashboard } from "../../../store/actions";
+import toast from "react-hot-toast";
 
 const AddProductForm = ({ setOpen, product, update = false }) => {
   const {
@@ -14,6 +17,7 @@ const AddProductForm = ({ setOpen, product, update = false }) => {
   } = useForm({ mode: "onTouched" });
 
   const [loader, setLoader] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (update && product) {
@@ -26,9 +30,20 @@ const AddProductForm = ({ setOpen, product, update = false }) => {
     }
   }, [update, product]);
 
+  const saveProductHandler = (data) => {
+    if (!update) {
+      // Create new product logic
+    } else {
+      const sendData = { ...data, id: product.id };
+      dispatch(
+        updateProductFromDashboard(sendData, toast, reset, setLoader, setOpen)
+      );
+    }
+  };
+
   return (
     <div className="py-5 relative h-full">
-      <form className="space-y-4">
+      <form className="space-y-4" onSubmit={handleSubmit(saveProductHandler)}>
         <div className="flex md:flex-row flex-col gap-4 w-full">
           <InputField
             label="Product Name"

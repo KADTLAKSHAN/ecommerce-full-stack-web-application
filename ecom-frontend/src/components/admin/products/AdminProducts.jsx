@@ -6,6 +6,8 @@ import { DataGrid } from "@mui/x-data-grid";
 import { adminProductTableColumn } from "../../helper/tableColumn";
 import { useState } from "react";
 import { useDashboardProductFilter } from "../../../hooks/useProductFilter";
+import Modal from "../../shared/Modal";
+import AddProductForm from "./AddProductForm";
 
 const AdminProducts = () => {
   // const products = [
@@ -52,6 +54,10 @@ const AdminProducts = () => {
     pagination?.pageNumber + 1 || 1
   );
 
+  const [selectedProduct, setSelectedProduct] = useState("");
+
+  const [openUpdateModal, setOpenUpdateModal] = useState(false);
+
   useDashboardProductFilter();
 
   const tableRecords = products?.map((item) => {
@@ -67,7 +73,10 @@ const AdminProducts = () => {
     };
   });
 
-  const handleEdit = (product) => {};
+  const handleEdit = (product) => {
+    setSelectedProduct(product);
+    setOpenUpdateModal(true);
+  };
 
   const handelDelete = (product) => {};
 
@@ -136,6 +145,18 @@ const AdminProducts = () => {
           )}
         </>
       )}
+
+      <Modal
+        open={openUpdateModal}
+        setOpen={setOpenUpdateModal}
+        title="Update Product"
+      >
+        <AddProductForm
+          setOpen={setOpenUpdateModal}
+          product={selectedProduct}
+          update={openUpdateModal}
+        />
+      </Modal>
     </div>
   );
 };

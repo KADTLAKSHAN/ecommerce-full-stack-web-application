@@ -5,42 +5,45 @@ import Loader from "../../shared/Loader";
 import { DataGrid } from "@mui/x-data-grid";
 import { adminProductTableColumn } from "../../helper/tableColumn";
 import { useState } from "react";
+import { useDashboardProductFilter } from "../../../hooks/useProductFilter";
 
 const AdminProducts = () => {
-  const products = [
-    {
-      productId: 2,
-      productName: "Wireless Earbuds Pro",
-      image:
-        "http://localhost:8080/images/970634c6-7b10-447f-a0f4-c3e7be529517.jpg",
-      description:
-        "Noise-cancelling wireless earbuds with superior sound quality",
-      quantity: 199,
-      price: 80.0,
-      discount: 15.0,
-      specialPrice: 68.0,
-    },
-    {
-      productId: 102,
-      productName: "Gaming Laptop GX",
-      image:
-        "http://localhost:8080/images/e4e4dcf1-b468-471f-86c1-f57fb2e9ad25.webp",
-      description:
-        "High-performance gaming laptop with a 4K display and powerful GPU",
-      quantity: 29,
-      price: 1200.0,
-      discount: 20.0,
-      specialPrice: 960.0,
-    },
-  ];
+  // const products = [
+  //   {
+  //     productId: 2,
+  //     productName: "Wireless Earbuds Pro",
+  //     image:
+  //       "http://localhost:8080/images/970634c6-7b10-447f-a0f4-c3e7be529517.jpg",
+  //     description:
+  //       "Noise-cancelling wireless earbuds with superior sound quality",
+  //     quantity: 199,
+  //     price: 80.0,
+  //     discount: 15.0,
+  //     specialPrice: 68.0,
+  //   },
+  //   {
+  //     productId: 102,
+  //     productName: "Gaming Laptop GX",
+  //     image:
+  //       "http://localhost:8080/images/e4e4dcf1-b468-471f-86c1-f57fb2e9ad25.webp",
+  //     description:
+  //       "High-performance gaming laptop with a 4K display and powerful GPU",
+  //     quantity: 29,
+  //     price: 1200.0,
+  //     discount: 20.0,
+  //     specialPrice: 960.0,
+  //   },
+  // ];
 
-  const pagination = {
-    pageNumber: 0,
-    pageSize: 50,
-    totalElements: 11,
-    totalPages: 1,
-    lastPage: true,
-  };
+  // const pagination = {
+  //   pageNumber: 0,
+  //   pageSize: 50,
+  //   totalElements: 11,
+  //   totalPages: 1,
+  //   lastPage: true,
+  // };
+
+  const { products, pagination } = useSelector((state) => state.products);
 
   const emptyProducts = !products || products?.length === 0;
   const { isLoading, errorMessage } = useSelector((state) => state.errors);
@@ -48,6 +51,8 @@ const AdminProducts = () => {
   const [currentPage, setCurrentPage] = useState(
     pagination?.pageNumber + 1 || 1
   );
+
+  useDashboardProductFilter();
 
   const tableRecords = products?.map((item) => {
     return {

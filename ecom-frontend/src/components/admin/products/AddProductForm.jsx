@@ -3,9 +3,15 @@ import InputField from "../../shared/InputField";
 import { useEffect, useState } from "react";
 import Spinners from "../../shared/Spinners";
 import Button from "@mui/material/Button";
-import { useDispatch } from "react-redux";
-import { updateProductFromDashboard } from "../../../store/actions";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchCategories,
+  updateProductFromDashboard,
+} from "../../../store/actions";
 import toast from "react-hot-toast";
+import SelectTextField from "../../shared/SelectTextField";
+import Skeleton from "../../shared/Skeleton";
+import ErrorPage from "../../shared/ErrorPage";
 
 const AddProductForm = ({ setOpen, product, update = false }) => {
   const {
@@ -17,6 +23,10 @@ const AddProductForm = ({ setOpen, product, update = false }) => {
   } = useForm({ mode: "onTouched" });
 
   const [loader, setLoader] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState();
+  const { categories } = useSelector((state) => state.products);
+  const { categoryLoader, errorMessage } = useSelector((state) => state.errors);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -29,6 +39,26 @@ const AddProductForm = ({ setOpen, product, update = false }) => {
       setValue("description", product?.description);
     }
   }, [update, product]);
+
+  useEffect(() => {
+    if (!update) {
+      dispatch(fetchCategories());
+    }
+  }, [dispatch, update]);
+
+  useEffect(() => {
+    if (!categoryLoader && categories) {
+      setSelectedCategory(categories[0]);
+    }
+  }, [categories, categoryLoader]);
+
+  if (categoryLoader) {
+    return <Skeleton />;
+  }
+
+  if (errorMessage) {
+    return <ErrorPage message={errorMessage} />;
+  }
 
   const saveProductHandler = (data) => {
     if (!update) {
@@ -55,6 +85,15 @@ const AddProductForm = ({ setOpen, product, update = false }) => {
             register={register}
             errors={errors}
           />
+
+          {!update && (
+            <SelectTextField
+              label="Select Category"
+              select={selectedCategory}
+              setSelect={setSelectedCategory}
+              lists={categories}
+            />
+          )}
         </div>
 
         <div className="flex md:flex-row flex-col gap-4 w-full">

@@ -8,6 +8,7 @@ import { useState } from "react";
 import { useDashboardProductFilter } from "../../../hooks/useProductFilter";
 import Modal from "../../shared/Modal";
 import AddProductForm from "./AddProductForm";
+import DeleteModal from "../../shared/DeleteModal";
 
 const AdminProducts = () => {
   // const products = [
@@ -60,6 +61,8 @@ const AdminProducts = () => {
 
   const [openAddModal, setOpenAddModal] = useState(false);
 
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+
   useDashboardProductFilter();
 
   const tableRecords = products?.map((item) => {
@@ -80,7 +83,10 @@ const AdminProducts = () => {
     setOpenUpdateModal(true);
   };
 
-  const handelDelete = (product) => {};
+  const handelDelete = (product) => {
+    setSelectedProduct(product);
+    setOpenDeleteModal(true);
+  };
 
   const handleImageUpload = (product) => {};
 
@@ -162,6 +168,13 @@ const AdminProducts = () => {
           update={openUpdateModal}
         />
       </Modal>
+
+      <DeleteModal
+        open={openDeleteModal}
+        setOpen={setOpenDeleteModal}
+        title="Delete Product"
+        onDeleteHandler={() => {}}
+      />
     </div>
   );
 };

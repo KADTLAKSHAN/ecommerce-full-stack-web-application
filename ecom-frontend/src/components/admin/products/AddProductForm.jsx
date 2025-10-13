@@ -5,6 +5,7 @@ import Spinners from "../../shared/Spinners";
 import Button from "@mui/material/Button";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  addNewProductFromDashboard,
   fetchCategories,
   updateProductFromDashboard,
 } from "../../../store/actions";
@@ -23,7 +24,7 @@ const AddProductForm = ({ setOpen, product, update = false }) => {
   } = useForm({ mode: "onTouched" });
 
   const [loader, setLoader] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState();
+  const [selectedCategory, setSelectedCategory] = useState(null);
   const { categories } = useSelector((state) => state.products);
   const { categoryLoader, errorMessage } = useSelector((state) => state.errors);
 
@@ -62,7 +63,10 @@ const AddProductForm = ({ setOpen, product, update = false }) => {
 
   const saveProductHandler = (data) => {
     if (!update) {
-      // Create new product logic
+      const sendData = { ...data, categoryId: selectedCategory.categoryId };
+      dispatch(
+        addNewProductFromDashboard(sendData, toast, reset, setLoader, setOpen)
+      );
     } else {
       const sendData = { ...data, id: product.id };
       dispatch(
@@ -161,6 +165,7 @@ const AddProductForm = ({ setOpen, product, update = false }) => {
                 ? "border-red-500"
                 : "border-slate-700"
             }`}
+            maxLength={255}
             {...register("description", {
               required: { value: true, message: "Description is required" },
             })}
@@ -194,7 +199,7 @@ const AddProductForm = ({ setOpen, product, update = false }) => {
                 <Spinners /> Loading...
               </div>
             ) : (
-              "Update"
+              "Save"
             )}
           </Button>
         </div>

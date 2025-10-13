@@ -3,8 +3,10 @@ import { useRef, useState } from "react";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import Spinners from "../../shared/Spinners";
 import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { updateProductImageFromDashboard } from "../../../store/actions";
 
-const ImageUploadForm = () => {
+const ImageUploadForm = ({ setOpen, product }) => {
   const fileInputRef = useRef();
 
   const [previewImage, setPreviewImage] = useState(null);
@@ -12,6 +14,8 @@ const ImageUploadForm = () => {
   const [loader, setLoader] = useState(false);
 
   const [selectedFile, setSelectedFile] = useState(null);
+
+  const dispatch = useDispatch();
 
   const onHandleImageChange = (e) => {
     const file = e.target.files[0];
@@ -30,7 +34,27 @@ const ImageUploadForm = () => {
     }
   };
 
-  const addNewImageHandler = () => {};
+  const addNewImageHandler = async (event) => {
+    event.preventDefault();
+
+    if (!selectedFile) {
+      toast.error("Please select an image before saving.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("image", selectedFile);
+
+    dispatch(
+      updateProductImageFromDashboard(
+        formData,
+        product.id,
+        toast,
+        setLoader,
+        setOpen
+      )
+    );
+  };
 
   const handleClearImage = () => {
     setPreviewImage(null);

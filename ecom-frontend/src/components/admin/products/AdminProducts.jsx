@@ -12,6 +12,7 @@ import DeleteModal from "../../shared/DeleteModal";
 import { deleteProduct } from "../../../store/actions";
 import toast from "react-hot-toast";
 import ImageUploadForm from "./ImageUploadForm";
+import ProductViewModel from "../../shared/ProductViewModel";
 
 const AdminProducts = () => {
   // const products = [
@@ -70,6 +71,8 @@ const AdminProducts = () => {
 
   const [openImageUploadModal, setOpenImageUploadModal] = useState(false);
 
+  const [openProductViewModal, setOpenProductViewModal] = useState(false);
+
   const [loader, setLoader] = useState(false);
 
   useDashboardProductFilter();
@@ -102,7 +105,10 @@ const AdminProducts = () => {
     setOpenImageUploadModal(true);
   };
 
-  const handleProductView = (product) => {};
+  const handleProductView = (product) => {
+    setSelectedProduct(product);
+    setOpenProductViewModal(true);
+  };
 
   const handlePaginationChange = (paginationMode) => {};
 
@@ -204,6 +210,12 @@ const AdminProducts = () => {
         title="Delete Product"
         onDeleteHandler={onDeleteHandler}
         loader={loader}
+      />
+
+      <ProductViewModel
+        open={openProductViewModal}
+        setOpen={setOpenProductViewModal}
+        product={selectedProduct}
       />
     </div>
   );

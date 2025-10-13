@@ -6,7 +6,9 @@ import Modal from "../../shared/Modal";
 import UpdateOrderForm from "./UpdateOrderForm";
 
 const OrderTable = ({ adminOrder, pagination }) => {
-  const navigate = useNavigate();
+  const [updateOpenModal, setUpdateOpenModal] = useState(false);
+  const [selectedItem, setSelectedItem] = useState("");
+  const [loader, setLoader] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(
     pagination?.pageNumber + 1 || 1
@@ -15,6 +17,7 @@ const OrderTable = ({ adminOrder, pagination }) => {
   const [searchParams] = useSearchParams();
   const params = new URLSearchParams(searchParams);
   const pathname = useLocation().pathname;
+  const navigate = useNavigate();
 
   const tableRecords = adminOrder?.map((item) => {
     return {
@@ -33,16 +36,10 @@ const OrderTable = ({ adminOrder, pagination }) => {
     navigate(`${pathname}?${params}`);
   };
 
-  const [updateOpenModal, setUpdateOpenModal] = useState(false);
-  const [selectedItem, setSelectedItem] = useState("");
-
   const handleEdit = (order) => {
     setSelectedItem(order);
     setUpdateOpenModal(true);
   };
-
-  const [loader, setLoader] = useState(false);
-
   return (
     <div>
       <h1 className="text-slate-800 text-3xl text-center font-bold pb-6 uppercase">

@@ -13,6 +13,7 @@ import { deleteProduct } from "../../../store/actions";
 import toast from "react-hot-toast";
 import ImageUploadForm from "./ImageUploadForm";
 import ProductViewModel from "../../shared/ProductViewModel";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
 const AdminProducts = () => {
   // const products = [
@@ -75,6 +76,12 @@ const AdminProducts = () => {
 
   const [loader, setLoader] = useState(false);
 
+  const navigate = useNavigate();
+
+  const [searchParams] = useSearchParams();
+  const params = new URLSearchParams(searchParams);
+  const pathname = useLocation().pathname;
+
   useDashboardProductFilter();
 
   const tableRecords = products?.map((item) => {
@@ -110,7 +117,12 @@ const AdminProducts = () => {
     setOpenProductViewModal(true);
   };
 
-  const handlePaginationChange = (paginationMode) => {};
+  const handlePaginationChange = (paginationModel) => {
+    const page = paginationModel.page + 1;
+    setCurrentPage(page);
+    params.set("page", page.toString());
+    navigate(`${pathname}?${params}`);
+  };
 
   const onDeleteHandler = () => {
     dispatch(

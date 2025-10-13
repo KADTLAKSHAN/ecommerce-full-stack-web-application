@@ -237,3 +237,65 @@ export const adminProductTableColumn = (
     },
   },
 ];
+
+export const adminCategoryTableColumn = (handleEdit, handleDelete) => [
+  {
+    sortable: false,
+    disableColumnMenu: true,
+    field: "id",
+    headerName: "CategoryId",
+    minWidth: 300,
+    headerAlign: "center",
+    align: "center",
+    editable: false,
+    headerClassName: "text-black font-semibold border",
+    cellClassName: "text-slate-700 font-normal border",
+    renderHeader: (params) => <span className="text-center">CategoryId</span>,
+  },
+  {
+    sortable: false,
+    disableColumnMenu: true,
+    field: "categoryName",
+    headerName: "Category Name",
+    minWidth: 400,
+    headerAlign: "center",
+    editable: false,
+    headerClassName: "text-black font-semibold border",
+    cellClassName: "text-slate-700 font-normal border",
+    renderHeader: (params) => (
+      <span className="text-center">Category Name</span>
+    ),
+  },
+  {
+    field: "action",
+    headerName: "Action",
+    headerAlign: "center",
+    editable: false,
+    headerClassName: "text-black font-semibold text-center",
+    cellClassName: "text-slate-700 font-normal",
+    sortable: false,
+    width: 400,
+    renderHeader: (params) => <span>Action</span>,
+    renderCell: (params) => {
+      return (
+        <div className="flex justify-center items-center space-x-2 h-full pt-2">
+          <button
+            onClick={() => handleEdit(params.row)}
+            className="flex items-center bg-blue-500 text-white px-4 h-9 rounded-md"
+          >
+            <FaEdit className="mr-2" />
+            Edit
+          </button>
+
+          <button
+            onClick={() => handleDelete(params.row)}
+            className="flex items-center bg-red-500 text-white px-4 h-9 rounded-md"
+          >
+            <FaTrashAlt className="mr-2" />
+            Delete
+          </button>
+        </div>
+      );
+    },
+  },
+];

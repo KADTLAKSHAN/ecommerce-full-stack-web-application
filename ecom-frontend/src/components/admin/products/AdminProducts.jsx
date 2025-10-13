@@ -142,7 +142,7 @@ const AdminProducts = () => {
       </div>
 
       {!emptyProducts && (
-        <h1 className="text-slate-800 text-3xl text-center font-bold pd-6 uppercase">
+        <h1 className="text-slate-800 text-3xl text-center font-bold pb-6 uppercase">
           All Products
         </h1>
       )}

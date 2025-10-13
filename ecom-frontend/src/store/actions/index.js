@@ -440,3 +440,76 @@ export const updateProductImageFromDashboard =
       );
     }
   };
+
+export const getCategoriesForDashboard = (queryString) => async (dispatch) => {
+  dispatch({ type: "CATEGORY_LOADER" });
+  try {
+    const { data } = await api.get(`/admin/categories?${queryString}`);
+    dispatch({
+      type: "FETCH_CATEGORIES",
+      payload: data.content,
+      pageNumber: data.pageNumber,
+      pageSize: data.pageSize,
+      totalElements: data.totalElements,
+      totalPages: data.totalPages,
+      lastPage: data.lastPage,
+    });
+    dispatch({ type: "CATEGORY_SUCCESS" });
+  } catch (error) {
+    console.log(error);
+    dispatch({
+      type: "IS_ERROR",
+      payload: error?.response?.data?.message || "Failed to fetch categories",
+    });
+  }
+};
+
+export const updateCategoryFromDashboard =
+  (sendData, toast, reset, setOpen) => async (dispatch) => {
+    try {
+      dispatch({ type: "CATEGORY_LOADER" });
+      await api.put(`/admin/categories/${sendData.id}`, sendData);
+      dispatch({ type: "CATEGORY_SUCCESS" });
+      reset();
+      toast.success("Category update successfull");
+      setOpen(false);
+      await dispatch(getCategoriesForDashboard());
+    } catch (error) {
+      toast.error(
+        error?.response?.data?.description || "Category update failed"
+      );
+    }
+  };
+
+export const addNewCategoryFromDashboard =
+  (sendData, toast, reset, setOpen) => async (dispatch, getState) => {
+    try {
+      dispatch({ type: "CATEGORY_LOADER" });
+      await api.post("/admin/categories", sendData);
+      dispatch({ type: "CATEGORY_SUCCESS" });
+      reset();
+      toast.success("Category created successfully");
+      setOpen(false);
+      await dispatch(getCategoriesForDashboard());
+    } catch (error) {
+      console.error(error);
+      error?.response?.data?.description || "Category creation failed";
+    } finally {
+      setLoader(false);
+    }
+  };
+
+export const deleteCategory =
+  (categoryId, toast, setOpenDeleteModal) => async (dispatch) => {
+    try {
+      dispatch({ type: "CATEGORY_LOADER" });
+      await api.delete(`/admin/categories/${categoryId}`);
+      dispatch({ type: "CATEGORY_SUCCESS" });
+      toast.success("Category delete successfull");
+      setOpenDeleteModal(false);
+      await dispatch(getCategoriesForDashboard());
+    } catch (error) {
+      console.error(error);
+      toast.error(error?.response?.data?.message || "Some Error Occured");
+    }
+  };

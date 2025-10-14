@@ -333,10 +333,12 @@ export const getOrdersForDashboard =
   };
 
 export const updateOrderStatusFromDashboard =
-  (orderId, orderStatus, toast, setLoader) => async (dispatch, getState) => {
+  (orderId, orderStatus, toast, setLoader, isAdmin) =>
+  async (dispatch, getState) => {
     try {
       setLoader(true);
-      const { data } = await api.put(`/admin/orders/${orderId}/status`, {
+      const endpoint = isAdmin ? "/admin/orders/" : "/seller/orders/";
+      const { data } = await api.put(`${endpoint}${orderId}/status`, {
         status: orderStatus,
       });
       toast.success(data.message || "Order updated successfully");
@@ -349,29 +351,32 @@ export const updateOrderStatusFromDashboard =
     }
   };
 
-export const dashboardProductsAction = (queryString) => async (dispatch) => {
-  try {
-    dispatch({ type: "IS_FETCHING" });
-    const { data } = await api.get(`/admin/products?${queryString}`);
-    dispatch({
-      type: "FETCH_PRODUCTS",
-      payload: data.content,
-      pageNumber: data.pageNumber,
-      pageSize: data.pageSize,
-      totalElements: data.totalElements,
-      totalPages: data.totalPages,
-      lastPage: data.lastPage,
-    });
-    dispatch({ type: "IS_SUCCESS" });
-  } catch (error) {
-    console.log(error);
-    dispatch({
-      type: "IS_ERROR",
-      payload:
-        error?.response?.data?.message || "Failed to fetch dashboard products",
-    });
-  }
-};
+export const dashboardProductsAction =
+  (queryString, isAdmin) => async (dispatch) => {
+    try {
+      dispatch({ type: "IS_FETCHING" });
+      const endpoint = isAdmin ? "/admin/products" : "/seller/products";
+      const { data } = await api.get(`${endpoint}?${queryString}`);
+      dispatch({
+        type: "FETCH_PRODUCTS",
+        payload: data.content,
+        pageNumber: data.pageNumber,
+        pageSize: data.pageSize,
+        totalElements: data.totalElements,
+        totalPages: data.totalPages,
+        lastPage: data.lastPage,
+      });
+      dispatch({ type: "IS_SUCCESS" });
+    } catch (error) {
+      console.log(error);
+      dispatch({
+        type: "IS_ERROR",
+        payload:
+          error?.response?.data?.message ||
+          "Failed to fetch dashboard products",
+      });
+    }
+  };
 
 export const updateProductFromDashboard =
   (sendData, toast, reset, setLoader, setOpen) => async (dispatch) => {

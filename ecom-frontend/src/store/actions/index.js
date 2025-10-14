@@ -513,3 +513,45 @@ export const deleteCategory =
       toast.error(error?.response?.data?.message || "Some Error Occured");
     }
   };
+
+export const fetchSellers = (queryString) => async (dispatch) => {
+  try {
+    dispatch({ type: "IS_FETCHING" });
+    const { data } = await api.get(`/auth/sellers?${queryString}`);
+    dispatch({
+      type: "FETCH_SELLERS",
+      payload: data["content"],
+      pageNumber: data["pageNumber"],
+      pageSize: data["pageSize"],
+      totalElements: data["totalElements"],
+      totalPages: data["totalPages"],
+      lastPage: data["lastPage"],
+    });
+    dispatch({ type: "IS_SUCCESS" });
+  } catch (error) {
+    console.log(error);
+    dispatch({
+      type: "IS_ERROR",
+      payload: error?.response?.data?.message || "Failed to fetch sellers data",
+    });
+  }
+};
+
+export const addNewSeller =
+  (sendData, setLoader, toast, reset, setOpen) =>
+  async (dispatch, getState) => {
+    try {
+      setLoader(true);
+      await api.post("/auth/sellers", sendData);
+      setLoader(false);
+      reset();
+      toast.success("Seller created successfully");
+      await dispatch(fetchSellers());
+    } catch (error) {
+      console.error(error);
+      error?.response?.data?.description || "Seller creation failed";
+    } finally {
+      setLoader(false);
+      setOpen(false);
+    }
+  };

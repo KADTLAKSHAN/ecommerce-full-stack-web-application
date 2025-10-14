@@ -1,4 +1,5 @@
 import { FaEdit, FaEye, FaImage, FaTrashAlt } from "react-icons/fa";
+import { MdOutlineEmail } from "react-icons/md";
 
 export const adminOrderTableColumn = (handleEdit) => [
   {
@@ -294,6 +295,56 @@ export const adminCategoryTableColumn = (handleEdit, handleDelete) => [
             <FaTrashAlt className="mr-2" />
             Delete
           </button>
+        </div>
+      );
+    },
+  },
+];
+
+export const adminSellerTableColumn = () => [
+  {
+    sortable: false,
+    disableColumnMenu: true,
+    field: "id",
+    headerName: "UserId",
+    minWidth: 400,
+    headerAlign: "center",
+    align: "center",
+    editable: false,
+    headerClassName: "text-black font-semibold border",
+    cellClassName: "text-slate-700 font-normal border",
+    renderHeader: (params) => <span className="text-center">SellerID</span>,
+  },
+  {
+    sortable: false,
+    disableColumnMenu: true,
+    field: "username",
+    headerName: "Username",
+    minWidth: 400,
+    headerAlign: "center",
+    editable: false,
+    headerClassName: "text-black font-semibold border",
+    cellClassName: "text-slate-700 font-normal border",
+    renderHeader: (params) => <span className="text-center">UserName</span>,
+  },
+  {
+    sortable: false,
+    disableColumnMenu: true,
+    field: "email",
+    headerName: "Email",
+    minWidth: 400,
+    headerAlign: "center",
+    editable: false,
+    headerClassName: "text-black font-semibold border",
+    cellClassName: "text-slate-700 font-normal border",
+    renderHeader: (params) => <span className="text-center">Email</span>,
+    renderCell: (params) => {
+      return (
+        <div className="flex items-center justify-center gap-1">
+          <span className="text-slate-700 text-lg">
+            <MdOutlineEmail />
+          </span>
+          <span>{params?.row?.email}</span>
         </div>
       );
     },

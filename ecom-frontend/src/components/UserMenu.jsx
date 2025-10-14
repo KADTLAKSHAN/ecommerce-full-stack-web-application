@@ -5,7 +5,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Avatar from "@mui/material/Avatar";
 import { Link, useNavigate } from "react-router-dom";
 import { BiUser } from "react-icons/bi";
-import { FaShoppingCart } from "react-icons/fa";
+import { FaShoppingCart, FaUserShield } from "react-icons/fa";
 import { IoExitOutline } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import BackDrop from "./BackDrop";
@@ -17,6 +17,8 @@ const UserMenu = () => {
   const { user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const isAdmin = user && user?.roles.includes("ROLE_ADMIN");
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -61,6 +63,16 @@ const UserMenu = () => {
             <span className="font-semibold">Order</span>
           </MenuItem>
         </Link>
+
+        {isAdmin && (
+          <Link to="/admin">
+            <MenuItem className="flex gap-2" onClick={handleClose}>
+              <FaUserShield className="text-xl" />
+              <span className="font-semibold">Admin Panel</span>
+            </MenuItem>
+          </Link>
+        )}
+
         <MenuItem className="flex gap-2" onClick={logoutHandler}>
           <div className="font-semibold w-full flex gap-2 items-center bg-button-gradient px-4 py-1 text-white rounded-sm">
             <IoExitOutline className="text-xl" />

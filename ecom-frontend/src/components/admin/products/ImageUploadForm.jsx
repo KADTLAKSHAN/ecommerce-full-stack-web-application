@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { updateProductImageFromDashboard } from "../../../store/actions";
 
-const ImageUploadForm = ({ setOpen, product }) => {
+const ImageUploadForm = ({ setOpen, product, isAdmin }) => {
   const fileInputRef = useRef();
 
   const [previewImage, setPreviewImage] = useState(null);
@@ -51,7 +51,8 @@ const ImageUploadForm = ({ setOpen, product }) => {
         product.id,
         toast,
         setLoader,
-        setOpen
+        setOpen,
+        isAdmin
       )
     );
   };

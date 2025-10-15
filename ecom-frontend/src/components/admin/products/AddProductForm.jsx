@@ -14,7 +14,7 @@ import SelectTextField from "../../shared/SelectTextField";
 import Skeleton from "../../shared/Skeleton";
 import ErrorPage from "../../shared/ErrorPage";
 
-const AddProductForm = ({ setOpen, product, update = false }) => {
+const AddProductForm = ({ setOpen, product, isAdmin, update = false }) => {
   const {
     register,
     handleSubmit,
@@ -65,12 +65,26 @@ const AddProductForm = ({ setOpen, product, update = false }) => {
     if (!update) {
       const sendData = { ...data, categoryId: selectedCategory.categoryId };
       dispatch(
-        addNewProductFromDashboard(sendData, toast, reset, setLoader, setOpen)
+        addNewProductFromDashboard(
+          sendData,
+          toast,
+          reset,
+          setLoader,
+          setOpen,
+          isAdmin
+        )
       );
     } else {
       const sendData = { ...data, id: product.id };
       dispatch(
-        updateProductFromDashboard(sendData, toast, reset, setLoader, setOpen)
+        updateProductFromDashboard(
+          sendData,
+          toast,
+          reset,
+          setLoader,
+          setOpen,
+          isAdmin
+        )
       );
     }
   };

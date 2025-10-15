@@ -62,6 +62,9 @@ const AdminProducts = () => {
     pagination?.pageNumber + 1 || 1
   );
 
+  const { user } = useSelector((state) => state.auth);
+  const isAdmin = user && user?.roles?.includes("ROLE_ADMIN");
+
   const [selectedProduct, setSelectedProduct] = useState("");
 
   const [openUpdateModal, setOpenUpdateModal] = useState(false);
@@ -126,7 +129,13 @@ const AdminProducts = () => {
 
   const onDeleteHandler = () => {
     dispatch(
-      deleteProduct(setLoader, selectedProduct?.id, toast, setOpenDeleteModal)
+      deleteProduct(
+        setLoader,
+        selectedProduct?.id,
+        toast,
+        setOpenDeleteModal,
+        isAdmin
+      )
     );
   };
 
@@ -201,6 +210,7 @@ const AdminProducts = () => {
         <AddProductForm
           setOpen={openUpdateModal ? setOpenUpdateModal : setOpenAddModal}
           product={selectedProduct}
+          isAdmin={isAdmin}
           update={openUpdateModal}
         />
       </Modal>
@@ -213,6 +223,7 @@ const AdminProducts = () => {
         <ImageUploadForm
           setOpen={setOpenImageUploadModal}
           product={selectedProduct}
+          isAdmin={isAdmin}
         />
       </Modal>
 
